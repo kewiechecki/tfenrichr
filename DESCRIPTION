@@ -14,15 +14,13 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends: 
-    DBI,
-    motifmatchr,
-    SummarizedExperiment,
-    TFBSTools,
-    R (>= 2.10)
+    R (>= 3.3)
 Imports:
     DBI,
     motifmatchr,
     SummarizedExperiment,
     TFBSTools
 Recommends: CrobustaTFs
+LinkingTo: Rcpp, RcppArmadillo
+SystemRequirements: C++11
 release_date: 2020
