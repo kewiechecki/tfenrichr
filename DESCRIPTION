@@ -1,6 +1,6 @@
 Package: tfenrichr
 Title: Enrichment tests for transcription factor binding sites.
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person(given = "Keira",
            family = "Wiechecki",
@@ -16,7 +16,8 @@ RoxygenNote: 7.1.1
 Depends: 
     R (>= 3.3)
 Imports:
-    DBI,
+    Biostrings,
+    GenomicRanges,
     motifmatchr,
     SummarizedExperiment,
     TFBSTools

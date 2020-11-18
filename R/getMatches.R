@@ -1,3 +1,4 @@
+
 #' Searches a given set of genomic ranges for the motifs returned by mergeMotifs.
 #' The background frequency is obtained from the total nucleotide frequencies in peaks.
 #'
@@ -9,9 +10,12 @@
 #' @return A \code{matches} object.
 #' @seealso \code{\link{mergeMotifs}}, \code{\link{motifmatchr::matchMotifs}}
 #' @export
+#' @import motifmatchr
+#' @importFrom SummarizedExperiment rowData rowData<-
+#' @importFrom GenomicRanges width
 getMatches <- function(peaks,genome,out="matches",motifs=CrobustaMotifs,...){
 	# get NT background freq from accessome
-	bg <- letterFrequency(Views(genome,peaks),c("A","C","G","T"))
+	bg <- Biostrings::letterFrequency(Biostrings::Views(genome,peaks),c("A","C","G","T"))
 	bg <- apply(bg,2,sum)
 	bg <- bg/sum(bg)
 
@@ -19,8 +23,11 @@ getMatches <- function(peaks,genome,out="matches",motifs=CrobustaMotifs,...){
 
 	# match motifs to peaks
 	matches <- matchMotifs(motifs,peaks,genome,bg=bg,out=out,...)
-	row.names(matches) <- rowData(matches)$name
-	rowData(matches)$width <- width(peaks)
+	# only attempt to assign names for matches or scores
+	if(class(matches)=="RangedSummarizedExperiment"){
+		row.names(matches) <- rowData(matches)$name
+		rowData(matches)$width <- width(peaks)
+	}
 	return(rmdup(motifs,matches,out))
 }
 
@@ -34,6 +41,8 @@ getMatches <- function(peaks,genome,out="matches",motifs=CrobustaMotifs,...){
 #' @return A \code{matches} object.
 #' @seealso \code{\link{getMatches}}, \code{\link{motifmatchr::matchMotifs}}
 #' @export
+#' @import motifmatchr
+#' @importFrom TFBSTools ID
 rmdup <- function(motifs,matches,metric='matches'){
 	# split motif matches by TF
 	sel <- split(names(motifs),ID(motifs))
@@ -62,6 +71,8 @@ rmdup <- function(motifs,matches,metric='matches'){
 #' @return A \code{data.frame} containing the test results.
 #' @seealso \code{\link{getMatches}}, \code{\link{motifmatchr::matchMotifs}}
 #' @export
+#' @import motifmatchr
+#' @importFrom SummarizedExperiment rowData
 matchPois <- function(peaks,matches,padj.method='fdr',allow.duplicates=F){
 	if(!allow.duplicates) peaks <- unique(peaks)
 	ct <- motifCounts(matches)
@@ -93,6 +104,7 @@ matchPois <- function(peaks,matches,padj.method='fdr',allow.duplicates=F){
 #' @return A logical matrix with columns corresponding to the motifs in \code{matches} and rows corresponding to the genes in \code{geneToPeak}.
 #' @seealso \code{\link{getOverlaps}}, \code{\link{matchMotifs}}
 #' @export
+#' @import motifmatchr
 regMat <- function(geneToPeak,matches){
 	mat <- as.matrix(motifMatches(matches))
 	geneID <- split(geneToPeak[,1],geneToPeak[,2])
