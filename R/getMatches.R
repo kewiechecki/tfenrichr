@@ -13,9 +13,10 @@
 #' @import motifmatchr
 #' @importFrom SummarizedExperiment rowData rowData<-
 #' @importFrom GenomicRanges width
-getMatches <- function(peaks,genome,out="matches",motifs=CrobustaMotifs,...){
+#' @importFrom Biostrings Views letterFrequency
+getMatches <- function(peaks, genome, out="positions", motifs=CrobustaMotifs, ...){
 	# get NT background freq from accessome
-	bg <- Biostrings::letterFrequency(Biostrings::Views(genome,peaks),c("A","C","G","T"))
+	bg <- letterFrequency(Views(genome,peaks), c("A","C","G","T"))
 	bg <- apply(bg,2,sum)
 	bg <- bg/sum(bg)
 
@@ -28,6 +29,11 @@ getMatches <- function(peaks,genome,out="matches",motifs=CrobustaMotifs,...){
 		row.names(matches) <- rowData(matches)$name
 		rowData(matches)$width <- width(peaks)
 	}
+
+	#         if(out=="positions"){
+	#                 p <- mapply(getP, motifs, matches, moreArgs=list(bg=bg))
+	# 
+	#         }
 	return(rmdup(motifs,matches,out))
 }
 
@@ -114,3 +120,50 @@ regMat <- function(geneToPeak,matches){
 	return(res)
 }
 
+#' Convert motifmatchr score to p-value.
+#'
+#' @param mat A position weight matrix
+#' @param scores A vector of motif scores
+#' @param bg Nucleotide background frequencies
+#' @return A p-value for the motif match
+#' @seealso \code{\link{TFMPvalue::TFMs2pv}}
+#' @export
+#' @importFrom TFMPvalue TFMsc2pv
+getP <- function(mat, scores, bg){
+	sapply(scores, TFMsc2pv, mat=mat, bg=bg, type="PWM")
+}
+
+#' Add p-value to GRangesList with a "score" column.
+#'
+#' @param matches A GRangesList of matches from \code{\link{motifmatchr::matchMotifs}(out='positions')}
+#' @param motifs The input motifs for matches.
+#' @param bg Nucleotide background frequencies
+#' @return The GRangesList with p-values for a match in the metadata.
+#' @seealso \code{\link{TFMPvalue::TFMs2pv}}
+#' @export
+#' @importFrom GenomicRanges mcols
+setP <- function(matches ,motifs, bg){
+	scores <- lapply(matches, function(x) mcols(x)$score)
+	mat <- Matrix(motifs)
+	p <- mapply(getP, scores, mat=mat, MoreArgs=list(bg=bg))
+}
+
+
+#' Converts position output to logical match output.
+#' 
+#' @param matches Output of \code{\link{motifmatchr::matchMotifs}(..., out='positions')
+#' @param peaks Subject input for \code{matchMotifs}.
+#' @param out One of \code{'counts'} or \code{matches}.
+#' @return A counts matrix with motifs as columns and peaks as rows.
+#' @export
+#' @importFrom IRanges overlapsAny countOverlaps
+countMatches <- function(matches, peaks, out=c('counts', 'matches')){
+	if(out=='matches') {
+		fn <- overlapsAny
+	} else {
+		fn <- countOverlaps
+	}
+	res <- sapply(matches, function(x) fn(peaks, x))
+	row.names(res) <- peaks$name
+	return(res)
+}

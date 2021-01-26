@@ -5,7 +5,7 @@
 \title{Searches a given set of genomic ranges for the motifs returned by mergeMotifs.
 The background frequency is obtained from the total nucleotide frequencies in peaks.}
 \usage{
-getMatches(peaks, genome, out = "matches", motifs = CrobustaMotifs, ...)
+getMatches(peaks, genome, out = "positions", motifs = CrobustaMotifs, ...)
 }
 \arguments{
 \item{peaks}{A GenomicRanges or other subject input for matchMotifs.}
