@@ -1,4 +1,4 @@
-# atacSeqFns
+# tfenrichr
 A package containing enrichment tests for binding sites.
 
 Depends: 
