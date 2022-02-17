@@ -24,6 +24,7 @@ getMatches <- function(peaks, genome, out="positions", motifs=CrobustaMotifs, ..
 
 	# match motifs to peaks
 	matches <- matchMotifs(motifs,peaks,genome,bg=bg,out=out,...)
+	row.names(matches) <- names(peaks)
 	# only attempt to assign names for matches or scores
 	if(class(matches)=="RangedSummarizedExperiment"){
 		row.names(matches) <- rowData(matches)$name
