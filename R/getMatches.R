@@ -24,10 +24,10 @@ getMatches <- function(peaks, genome, out="positions", motifs=CrobustaMotifs, ..
 
 	# match motifs to peaks
 	matches <- matchMotifs(motifs,peaks,genome,bg=bg,out=out,...)
-	row.names(matches) <- names(peaks)
+	#row.names(matches) <- names(peaks)
 	# only attempt to assign names for matches or scores
 	if(class(matches)=="RangedSummarizedExperiment"){
-		row.names(matches) <- rowData(matches)$name
+	#	row.names(matches) <- rowData(matches)$name
 		rowData(matches)$width <- width(peaks)
 	}
 
@@ -152,7 +152,7 @@ setP <- function(matches ,motifs, bg){
 
 #' Converts position output to logical match output.
 #' 
-#' @param matches Output of \code{\link{motifmatchr::matchMotifs}(..., out='positions')
+#' @param matches Output of \code{\link{motifmatchr::matchMotifs}(..., out='positions')}
 #' @param peaks Subject input for \code{matchMotifs}.
 #' @param out One of \code{'counts'} or \code{matches}.
 #' @return A counts matrix with motifs as columns and peaks as rows.

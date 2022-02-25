@@ -1,6 +1,6 @@
 Package: tfenrichr
 Title: Enrichment tests for transcription factor binding sites.
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: 
     person(given = "Keira",
            family = "Wiechecki",
