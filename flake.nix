@@ -26,8 +26,10 @@
           # R‐side dependencies:
           propagatedBuildInputs = [
 		  	  rpkgs.devtools
-              rpkgs.BioStrings
+              rpkgs.Biostrings
               rpkgs.GenomicRanges
+              rpkgs.motifmatchr
+              rpkgs.RcppArmadillo
               rpkgs.SummarizedExperiment
 			  rpkgs.TFMPvalue
 			  rpkgs.TFBSTools
@@ -86,9 +88,13 @@
             buildInputs = [
               pkgs.git
               pkgs.R
-              rpkgs.GenomicFeatures
+              rpkgs.Biostrings
               rpkgs.GenomicRanges
-			  rpkgs.rtracklayer
+              rpkgs.motifmatchr
+              rpkgs.RcppArmadillo
+              rpkgs.SummarizedExperiment
+			  rpkgs.TFMPvalue
+			  rpkgs.TFBSTools
 			  pkgs.bzip2
 			  pkgs.curl
               pkgs.gsl
