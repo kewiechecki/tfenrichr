@@ -1,0 +1,101 @@
+# large files
+
+# backup files
+**/*~
+**/\#*\#
+**/.\#*
+
+# intermediate files
+**/*.aux
+**/*.bcf
+**/*.nav
+**/*.snm
+**/*.log
+
+# images
+#**/*.png
+#**/*.jpg
+**/*.eps
+**/*.svg
+**/*.pdf
+**/*.dot
+
+# plain text tables
+#**/*.csv
+#**/*.tsv
+#**/*.txt
+
+# office-likes
+**/*.xlsx
+**/*.pptx
+**/*.doc
+**/*.docx
+**/*.odp
+
+# binary files
+**/*.jld2
+**/*.pb
+**/*.pickle
+**/*.model
+
+**/*.Robj
+**/*.Rdata
+**/*.Rda
+**/*.RData
+**/*.Rhistory
+
+# compressed
+**/*.zip
+**/*.gz
+**/*.tar
+
+# genomes
+**/*.fa
+**/*.fasta
+**/*.gff3
+**/*.bed
+
+# other temporary files
+**/*bak
+**/*backup
+**/*tmp
+**/*old
+
+**/notes*
+**/tmp*
+**/old*
+
+**/*.old.*
+**/*.tmp.*
+
+**/tmp/**
+**/build/**
+**/old*/**
+**/_*/**
+
+# characters that shouldn't be in filename
+**/*\ *
+**/*'*
+**/*\!*
+**/"*
+
+# untracked output dirs
+**/out/**
+**/20*-*-*/**
+**/20*_*_*/**
+**/untracked/**
+**/*untracked
+
+notes*/**
+presentation*/**
+fig/**
+figs/**
+paper/**
+
+targets/**
+interactionExample/**
+
+# cached environments
+**/environment*
+**/__pycache__
+**/edit
